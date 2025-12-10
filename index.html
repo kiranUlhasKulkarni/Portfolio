@@ -7,90 +7,410 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
         
         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
             font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
         }
         
         html {
             scroll-behavior: smooth;
         }
         
+        /* Custom Cursor */
         body {
-            overflow-x: hidden;
+            cursor: none;
         }
         
-        /* Animated Gradient Background */
-        .gradient-bg {
-            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            mix-blend-mode: difference;
+        }
+        
+        #cursor-glow {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.3), transparent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.15s ease;
+        }
+        
+        /* Animated Matrix Background */
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        
+        /* Particle Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #667eea;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-50px) translateX(-50px); }
+            75% { transform: translateY(-150px) translateX(100px); }
+        }
+        
+        /* Ultra Gradient Hero */
+        .hero-gradient {
+            background: linear-gradient(135deg, 
+                #667eea 0%, 
+                #764ba2 25%, 
+                #f093fb 50%, 
+                #4facfe 75%, 
+                #667eea 100%);
             background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            animation: gradientFlow 15s ease infinite;
+            position: relative;
+            overflow: hidden;
         }
         
-        @keyframes gradientShift {
+        @keyframes gradientFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
         
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        /* Glowing Text */
+        .glow-text {
+            text-shadow: 
+                0 0 10px rgba(102, 126, 234, 0.8),
+                0 0 20px rgba(102, 126, 234, 0.6),
+                0 0 30px rgba(102, 126, 234, 0.4),
+                0 0 40px rgba(102, 126, 234, 0.2);
+            animation: textGlow 2s ease-in-out infinite alternate;
         }
         
-        /* Glassmorphism Effect */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px rgba(102, 126, 234, 0.8), 0 0 20px rgba(102, 126, 234, 0.6); }
+            to { text-shadow: 0 0 20px rgba(102, 126, 234, 1), 0 0 30px rgba(102, 126, 234, 0.8), 0 0 40px rgba(102, 126, 234, 0.6); }
         }
         
-        /* Enhanced Section Cards */
-        .section-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid #e5e7eb;
+        /* Glassmorphism Nav */
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(102, 126, 234, 0.1);
+        }
+        
+        /* Neon Links */
+        .neon-link {
             position: relative;
-            overflow: hidden;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
         
-        .section-card::before {
+        .neon-link::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.8);
+        }
+        
+        .neon-link:hover::before {
+            width: 100%;
+        }
+        
+        .neon-link:hover {
+            color: #667eea;
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.8);
+        }
+        
+        /* 3D Card Effect */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+            position: relative;
+        }
+        
+        .card-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-15px) rotateX(5deg) scale(1.02);
+            box-shadow: 
+                0 25px 50px -12px rgba(102, 126, 234, 0.4),
+                0 0 100px rgba(102, 126, 234, 0.2);
+        }
+        
+        .card-3d:hover::before {
+            opacity: 1;
+        }
+        
+        /* Neon Button */
+        .neon-button {
+            position: relative;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 20px rgba(102, 126, 234, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        .neon-button::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
         }
         
-        .section-card:hover::before {
+        .neon-button:hover::before {
             left: 100%;
         }
         
-        .section-card:hover {
-            box-shadow: 0 25px 50px -12px rgba(102, 126, 234, 0.25);
-            transform: translateY(-8px);
+        .neon-button:hover {
+            box-shadow: 
+                0 0 30px rgba(102, 126, 234, 0.8),
+                0 0 60px rgba(102, 126, 234, 0.4),
+                inset 0 0 30px rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        /* Animated Skill Badge */
+        .skill-badge-neon {
+            position: relative;
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            color: #667eea;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .skill-badge-neon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .skill-badge-neon:hover {
+            background: rgba(102, 126, 234, 0.3);
             border-color: #667eea;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            color: #fff;
+        }
+        
+        .skill-badge-neon:hover::before {
+            left: 100%;
+        }
+        
+        /* Holographic Card */
+        .holo-card {
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.05) 0%, 
+                rgba(118, 75, 162, 0.05) 50%, 
+                rgba(102, 126, 234, 0.05) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .holo-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(102, 126, 234, 0.1) 50%,
+                transparent 70%
+            );
+            transform: rotate(0deg);
+            transition: transform 0.6s ease;
+        }
+        
+        .holo-card:hover::before {
+            transform: rotate(180deg);
+        }
+        
+        /* Timeline with Glow */
+        .timeline-node {
+            position: relative;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 
+                0 0 30px rgba(102, 126, 234, 0.6),
+                0 0 60px rgba(102, 126, 234, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 
+                    0 0 30px rgba(102, 126, 234, 0.6),
+                    0 0 60px rgba(102, 126, 234, 0.3);
+            }
+            50% {
+                box-shadow: 
+                    0 0 40px rgba(102, 126, 234, 0.8),
+                    0 0 80px rgba(102, 126, 234, 0.5);
+            }
+        }
+        
+        /* Module Badge with Scan Line */
+        .module-badge-scan {
+            position: relative;
+            overflow: hidden;
+            animation: badge-float 3s ease-in-out infinite;
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        
+        .module-badge-scan::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(transparent, rgba(255, 255, 255, 0.3));
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: -50%; }
+            100% { top: 150%; }
+        }
+        
+        @keyframes badge-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Typing Animation */
+        .typing {
+            overflow: hidden;
+            border-right: 3px solid #667eea;
+            white-space: nowrap;
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #667eea; }
         }
         
         /* Video Container Enhancement */
+        .video-glow {
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 
+                0 0 40px rgba(102, 126, 234, 0.3),
+                0 20px 60px rgba(0, 0, 0, 0.4);
+            transition: all 0.5s ease;
+        }
+        
+        .video-glow:hover {
+            box-shadow: 
+                0 0 60px rgba(102, 126, 234, 0.6),
+                0 30px 80px rgba(0, 0, 0, 0.6);
+            transform: scale(1.02);
+        }
+        
+        .video-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            border-radius: 1rem;
+            z-index: -1;
+            animation: gradientFlow 3s ease infinite;
+        }
+        
         .video-container {
             position: relative;
             padding-bottom: 56.25%;
             height: 0;
-            overflow: hidden;
-            border-radius: 0.75rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .video-container:hover {
-            box-shadow: 0 25px 50px -12px rgba(102, 126, 234, 0.3);
-            transform: scale(1.02);
         }
         
         .video-container iframe {
@@ -100,879 +420,605 @@
             width: 100%;
             height: 100%;
             border: none;
+            border-radius: 0.75rem;
         }
         
-        /* Enhanced Navigation */
-        .nav-link {
+        /* Animated Section Title */
+        .section-title {
             position: relative;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 3px;
-            bottom: -6px;
-            left: 50%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-            border-radius: 2px;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        /* Animated Skill Badges */
-        .skill-badge {
             display: inline-block;
-            padding: 0.5rem 1rem;
-            margin: 0.375rem;
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #374151;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
         }
         
-        .skill-badge::before {
+        .section-title::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
+            bottom: -10px;
+            left: 0;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            transition: left 0.3s ease;
-            z-index: -1;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            background-size: 200% 100%;
+            animation: gradientSlide 3s ease infinite;
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
         }
         
-        .skill-badge:hover {
-            color: white;
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        @keyframes gradientSlide {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
         
-        .skill-badge:hover::before {
-            left: 0;
-        }
-        
-        /* Module Badge Animation */
-        .module-badge {
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        /* Timeline Circle Animation */
-        .timeline-circle {
+        /* Contact Card Hologram */
+        .contact-holo {
             position: relative;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        /* Scroll Reveal Animation */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-        
-        .scroll-reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Button Enhancements */
-        .cta-button {
-            position: relative;
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px solid rgba(102, 126, 234, 0.3);
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
         }
         
-        .cta-button::before {
+        .contact-holo::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.3), transparent);
+            animation: holo-spin 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
         
-        .cta-button:hover::before {
-            width: 300px;
-            height: 300px;
+        .contact-holo:hover::before {
+            opacity: 1;
         }
         
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        @keyframes holo-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
-        /* Icon Animations */
-        .icon-float {
-            animation: iconFloat 3s ease-in-out infinite;
+        .contact-holo:hover {
+            border-color: #667eea;
+            box-shadow: 
+                0 0 40px rgba(102, 126, 234, 0.4),
+                inset 0 0 40px rgba(102, 126, 234, 0.1);
+            transform: translateY(-10px);
         }
         
-        @keyframes iconFloat {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-5px) rotate(5deg); }
-        }
-        
-        /* Stats Counter Animation */
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        /* Company Card Hover Effect */
-        .company-card {
-            transition: all 0.4s ease;
-            position: relative;
-        }
-        
-        .company-card::before {
-            content: '';
-            position: absolute;
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
             top: 0;
             left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            z-index: 9999;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+        }
+        
+        /* Company Card Lightning */
+        .company-lightning {
+            position: relative;
+            transition: all 0.4s ease;
+            border-left: 4px solid transparent;
+            background: rgba(102, 126, 234, 0.02);
+        }
+        
+        .company-lightning::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 0;
             width: 4px;
             height: 0;
             transition: height 0.4s ease;
         }
         
-        .company-card:hover::before {
+        .company-lightning:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(15px);
+        }
+        
+        .company-lightning:nth-child(1)::before { background: #667eea; }
+        .company-lightning:nth-child(2)::before { background: #764ba2; }
+        .company-lightning:nth-child(3)::before { background: #f093fb; }
+        .company-lightning:nth-child(4)::before { background: #4facfe; }
+        .company-lightning:nth-child(5)::before { background: #43e97b; }
+        .company-lightning:nth-child(6)::before { background: #fa709a; }
+        
+        .company-lightning:hover::before {
             height: 100%;
+            box-shadow: 0 0 20px currentColor;
         }
         
-        .company-card:hover {
-            transform: translateX(10px);
-            background: rgba(102, 126, 234, 0.05);
-        }
-        
-        /* Parallax Effect for Hero */
-        .parallax-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-            z-index: 0;
-        }
-        
-        .parallax-shape {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        .shape-1 {
-            width: 300px;
-            height: 300px;
-            top: 10%;
-            left: 5%;
-            animation-delay: 0s;
-        }
-        
-        .shape-2 {
-            width: 200px;
-            height: 200px;
-            top: 60%;
-            right: 10%;
-            animation-delay: 2s;
-        }
-        
-        .shape-3 {
-            width: 150px;
-            height: 150px;
-            top: 40%;
-            left: 60%;
-            animation-delay: 4s;
-        }
-        
-        /* Loading Animation for Images */
-        .loading-shimmer {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
-        /* Enhanced Footer */
-        .footer-gradient {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }
-        
-        /* Mobile Menu Animation */
-        .mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-        
-        /* Highlight Effect */
-        .highlight-box {
-            position: relative;
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            border: 2px solid transparent;
-            background-clip: padding-box;
-        }
-        
-        .highlight-box::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 0.75rem;
-            z-index: -1;
+        /* Fade in on scroll */
+        .fade-in {
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transform: translateY(50px);
+            transition: all 1s ease;
         }
         
-        .highlight-box:hover::before {
+        .fade-in.visible {
             opacity: 1;
+            transform: translateY(0);
         }
         
-        /* Contact Card Shine Effect */
-        .contact-card {
-            position: relative;
-            overflow: hidden;
+        /* Icon Orbit */
+        .icon-orbit {
+            animation: orbit 4s linear infinite;
         }
         
-        .contact-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-        
-        @keyframes shine {
-            0% { left: -50%; }
-            100% { left: 150%; }
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(5px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(5px) rotate(-360deg); }
         }
         
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .stat-number { font-size: 2rem; }
-            .parallax-shape { display: none; }
+            body { cursor: default; }
+            #cursor, #cursor-glow { display: none; }
+            .card-3d:hover { transform: translateY(-10px) scale(1.02); }
         }
         
-        @media print {
-            .no-print { display: none; }
+        /* Dark mode enhancements */
+        ::selection {
+            background: rgba(102, 126, 234, 0.3);
+            color: #fff;
+        }
+        
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #667eea, #764ba2);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #764ba2, #667eea);
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-black text-white">
+    <!-- Custom Cursors -->
+    <div id="cursor"></div>
+    <div id="cursor-glow"></div>
+    
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+    
+    <!-- Matrix Background -->
+    <canvas id="matrix-bg"></canvas>
+    
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+    
     <!-- Navigation -->
-    <nav class="bg-white/90 backdrop-blur-md shadow-lg fixed w-full top-0 z-50 no-print">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+    <nav class="glass-nav fixed w-full top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-5">
             <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold gradient-text">Kiran Kulkarni</div>
+                <div class="text-2xl font-bold glow-text">KIRAN KULKARNI</div>
                 <div class="hidden md:flex space-x-8">
-                    <a href="#about" class="nav-link text-gray-700 hover:text-indigo-600">About</a>
-                    <a href="#module4" class="nav-link text-gray-700 hover:text-indigo-600">Elevator Pitch</a>
-                    <a href="#resume" class="nav-link text-gray-700 hover:text-indigo-600">Resume</a>
-                    <a href="#module8" class="nav-link text-gray-700 hover:text-indigo-600">Interview</a>
-                    <a href="#strategy" class="nav-link text-gray-700 hover:text-indigo-600">Strategy</a>
-                    <a href="#contact" class="nav-link text-gray-700 hover:text-indigo-600">Contact</a>
+                    <a href="#about" class="neon-link font-semibold">ABOUT</a>
+                    <a href="#module4" class="neon-link font-semibold">PITCH</a>
+                    <a href="#resume" class="neon-link font-semibold">RESUME</a>
+                    <a href="#module8" class="neon-link font-semibold">INTERVIEW</a>
+                    <a href="#strategy" class="neon-link font-semibold">STRATEGY</a>
+                    <a href="#contact" class="neon-link font-semibold">CONTACT</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="gradient-bg text-white pt-32 pb-24 px-4 relative overflow-hidden">
-        <div class="parallax-bg">
-            <div class="parallax-shape shape-1"></div>
-            <div class="parallax-shape shape-2"></div>
-            <div class="parallax-shape shape-3"></div>
-        </div>
-        <div class="max-w-4xl mx-auto text-center relative z-10">
-            <div class="mb-6 icon-float">
-                <i class="fas fa-code text-6xl mb-4 opacity-90"></i>
+    <section class="hero-gradient min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center relative z-10 pt-20">
+            <div class="mb-8">
+                <i class="fas fa-code text-7xl glow-text icon-orbit"></i>
             </div>
-            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight">Portfolio</h1>
-            <p class="text-xl md:text-2xl mb-4 text-indigo-100 font-medium">Master's in Computer Science Student</p>
-            <p class="text-lg md:text-xl mb-12 text-indigo-100">Northeastern University | Khoury College of Computer Sciences</p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="mailto:kulkarni.ki@northeastern.edu" class="cta-button bg-white text-indigo-600 px-8 py-4 rounded-full font-bold hover:bg-indigo-50 transition duration-300 shadow-xl">
-                    <i class="fas fa-envelope mr-2"></i>Email Me
+            <h1 class="text-6xl md:text-8xl font-black mb-8 glow-text tracking-tight">
+                CAREER PORTFOLIO
+            </h1>
+            <p class="text-2xl md:text-3xl mb-6 font-semibold opacity-90">Master's in Computer Science</p>
+            <p class="text-xl md:text-2xl mb-12 opacity-80">Northeastern University | Khoury College</p>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="mailto:kulkarni.ki@northeastern.edu" class="neon-button px-10 py-5 rounded-full font-bold text-lg shadow-2xl">
+                    <i class="fas fa-envelope mr-3"></i>EMAIL ME
                 </a>
-                <a href="https://www.linkedin.com/in/kiran-kulkarni-04973127b" target="_blank" class="cta-button bg-indigo-700/90 text-white px-8 py-4 rounded-full font-bold hover:bg-indigo-800 transition duration-300 shadow-xl">
-                    <i class="fab fa-linkedin mr-2"></i>LinkedIn
+                <a href="https://www.linkedin.com/in/kiran-kulkarni-04973127b" target="_blank" class="neon-button px-10 py-5 rounded-full font-bold text-lg shadow-2xl">
+                    <i class="fab fa-linkedin mr-3"></i>LINKEDIN
                 </a>
-                <a href="https://github.com/kiran-kulkarni8" target="_blank" class="cta-button bg-gray-900/90 text-white px-8 py-4 rounded-full font-bold hover:bg-gray-800 transition duration-300 shadow-xl">
-                    <i class="fab fa-github mr-2"></i>GitHub
+                <a href="https://github.com/kiran-kulkarni8" target="_blank" class="neon-button px-10 py-5 rounded-full font-bold text-lg shadow-2xl">
+                    <i class="fab fa-github mr-3"></i>GITHUB
                 </a>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-24 px-4 bg-white">
-        <div class="max-w-4xl mx-auto scroll-reveal">
-            <h2 class="text-5xl font-black text-gray-900 mb-12 text-center">About This Portfolio</h2>
-            <div class="highlight-box mb-8">
-                <p class="text-lg text-gray-700 leading-relaxed mb-6">
-                    This e-portfolio showcases my career preparation journey through Northeastern University's Career Development modules. As a Master's student in Computer Science specializing in <span class="font-semibold text-indigo-600">Software Development and Quality Engineering</span>, I've developed a comprehensive approach to launching my career in technology.
+    <section id="about" class="py-32 px-4 bg-black relative">
+        <div class="max-w-5xl mx-auto fade-in">
+            <h2 class="section-title text-6xl font-black text-center mb-16 glow-text">ABOUT THIS PORTFOLIO</h2>
+            <div class="holo-card rounded-3xl p-12 mb-12">
+                <p class="text-xl leading-relaxed mb-8 opacity-90">
+                    This e-portfolio showcases my career preparation journey through Northeastern University's Career Development modules. As a Master's student in Computer Science specializing in <span class="text-purple-400 font-bold glow-text">Software Development and Quality Engineering</span>, I've developed a comprehensive approach to launching my career in technology.
                 </p>
-                <p class="text-lg text-gray-700 leading-relaxed">
-                    Through these modules, I've refined my professional brand, developed strategic job search plans, and prepared to connect with potential employers. This portfolio demonstrates my readiness to contribute to innovative technology companies as an <span class="font-semibold text-indigo-600">SDET or Software Engineer intern</span>.
+                <p class="text-xl leading-relaxed opacity-90">
+                    Through these modules, I've refined my professional brand, developed strategic job search plans, and prepared to connect with potential employers. This portfolio demonstrates my readiness to contribute to innovative technology companies as an <span class="text-purple-400 font-bold glow-text">SDET or Software Engineer intern</span>.
                 </p>
             </div>
-            <div class="grid md:grid-cols-3 gap-6 mt-12">
-                <div class="text-center p-8 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <div class="text-5xl mb-4 icon-float">🎯</div>
-                    <h3 class="font-bold text-xl text-gray-900 mb-2">Career Goals</h3>
-                    <p class="text-gray-600 font-medium">SDET & Software Engineer Roles</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-3d text-center p-10 bg-gradient-to-br from-purple-900/20 to-indigo-900/20 rounded-3xl border border-purple-500/30">
+                    <div class="text-6xl mb-6 icon-orbit">🎯</div>
+                    <h3 class="font-black text-2xl mb-4 glow-text">CAREER GOALS</h3>
+                    <p class="opacity-80 text-lg">SDET & Software Engineer Roles</p>
                 </div>
-                <div class="text-center p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <div class="text-5xl mb-4 icon-float" style="animation-delay: 0.5s;">💼</div>
-                    <h3 class="font-bold text-xl text-gray-900 mb-2">Experience</h3>
-                    <p class="text-gray-600 font-medium">EPAM Systems Test Automation</p>
+                <div class="card-3d text-center p-10 bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-3xl border border-blue-500/30">
+                    <div class="text-6xl mb-6 icon-orbit" style="animation-delay: 1s;">💼</div>
+                    <h3 class="font-black text-2xl mb-4 glow-text">EXPERIENCE</h3>
+                    <p class="opacity-80 text-lg">EPAM Systems Test Automation</p>
                 </div>
-                <div class="text-center p-8 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <div class="text-5xl mb-4 icon-float" style="animation-delay: 1s;">🚀</div>
-                    <h3 class="font-bold text-xl text-gray-900 mb-2">Seeking</h3>
-                    <p class="text-gray-600 font-medium">Summer 2026 Internship</p>
+                <div class="card-3d text-center p-10 bg-gradient-to-br from-pink-900/20 to-purple-900/20 rounded-3xl border border-pink-500/30">
+                    <div class="text-6xl mb-6 icon-orbit" style="animation-delay: 2s;">🚀</div>
+                    <h3 class="font-black text-2xl mb-4 glow-text">SEEKING</h3>
+                    <p class="opacity-80 text-lg">Summer 2026 Internship</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Module 4: Professional Introduction -->
-    <section id="module4" class="py-24 px-4 bg-gradient-to-br from-gray-50 to-indigo-50">
-        <div class="max-w-4xl mx-auto scroll-reveal">
-            <div class="text-center mb-12">
-                <span class="module-badge bg-indigo-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">MODULE 1</span>
-                <h2 class="text-5xl font-black text-gray-900 mt-6 mb-4">Professional Introduction</h2>
-                <p class="text-2xl text-indigo-600 font-semibold">My Elevator Pitch</p>
+    <!-- Module 4 -->
+    <section id="module4" class="py-32 px-4 bg-gradient-to-b from-black to-purple-950/20 relative">
+        <div class="max-w-5xl mx-auto fade-in">
+            <div class="text-center mb-16">
+                <span class="module-badge-scan bg-purple-600 px-8 py-4 rounded-full font-black text-sm shadow-2xl mb-6">MODULE 1</span>
+                <h2 class="section-title text-6xl font-black mb-6 glow-text">PROFESSIONAL INTRODUCTION</h2>
+                <p class="text-3xl font-bold text-purple-400">My Elevator Pitch</p>
             </div>
-            <div class="section-card bg-white rounded-2xl p-10 shadow-2xl">
-                <div class="mb-8">
-                    <h3 class="text-3xl font-bold text-gray-900 mb-4">Video Presentation</h3>
-                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-                        In this video, I introduce myself professionally, highlighting my background in test automation from EPAM Systems, my current studies at Northeastern, and my career aspirations in Software Development and Quality Engineering.
-                    </p>
+            <div class="card-3d bg-gradient-to-br from-purple-900/30 to-black rounded-3xl p-12 border border-purple-500/30">
+                <h3 class="text-4xl font-black mb-6 glow-text">VIDEO PRESENTATION</h3>
+                <p class="text-xl mb-10 opacity-80 leading-relaxed">
+                    In this video, I introduce myself professionally, highlighting my background in test automation from EPAM Systems, my current studies at Northeastern, and my career aspirations in Software Development and Quality Engineering.
+                </p>
+                <div class="video-glow mb-10">
+                    <div class="video-container">
+                        <iframe 
+                            src="https://northeastern.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e099738d-4b4c-4668-bd7d-b3af00accf50&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all"
+                            allowfullscreen
+                            allow="autoplay">
+                        </iframe>
+                    </div>
                 </div>
-                <div class="video-container mb-8">
-                    <iframe 
-                        src="https://northeastern.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e099738d-4b4c-4668-bd7d-b3af00accf50&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all"
-                        allowfullscreen
-                        allow="autoplay">
-                    </iframe>
-                </div>
-                <div class="highlight-box">
-                    <h4 class="font-bold text-xl text-gray-900 mb-4"><i class="fas fa-star text-yellow-500 mr-2"></i>Key Highlights:</h4>
-                    <ul class="space-y-3 text-gray-700 text-lg">
-                        <li class="flex items-start"><i class="fas fa-check-circle text-indigo-600 mr-3 mt-1"></i><span>Test automation expertise with Java, Selenium, and REST-Assured</span></li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-indigo-600 mr-3 mt-1"></i><span>Full-stack development with MERN stack</span></li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-indigo-600 mr-3 mt-1"></i><span>Seeking Summer 2026 SDET/Software Engineer internship</span></li>
+                <div class="holo-card rounded-2xl p-8">
+                    <h4 class="font-black text-2xl mb-6 glow-text"><i class="fas fa-star text-yellow-400 mr-3"></i>KEY HIGHLIGHTS</h4>
+                    <ul class="space-y-4 text-xl">
+                        <li class="flex items-start"><i class="fas fa-bolt text-purple-400 mr-4 mt-1"></i><span>Test automation expertise with Java, Selenium, and REST-Assured</span></li>
+                        <li class="flex items-start"><i class="fas fa-bolt text-purple-400 mr-4 mt-1"></i><span>Full-stack development with MERN stack</span></li>
+                        <li class="flex items-start"><i class="fas fa-bolt text-purple-400 mr-4 mt-1"></i><span>Seeking Summer 2026 SDET/Software Engineer internship</span></li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Module 7: Resume -->
-    <section id="resume" class="py-24 px-4 bg-white">
-        <div class="max-w-5xl mx-auto scroll-reveal">
-            <div class="text-center mb-12">
-                <span class="module-badge bg-purple-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">MODULE 2</span>
-                <h2 class="text-5xl font-black text-gray-900 mt-6 mb-4">Professional Resume</h2>
-                <p class="text-2xl text-purple-600 font-semibold">My Technical Background & Experience</p>
+    <!-- Resume Section -->
+    <section id="resume" class="py-32 px-4 bg-black relative">
+        <div class="max-w-6xl mx-auto fade-in">
+            <div class="text-center mb-16">
+                <span class="module-badge-scan bg-blue-600 px-8 py-4 rounded-full font-black text-sm shadow-2xl mb-6">MODULE 2</span>
+                <h2 class="section-title text-6xl font-black mb-6 glow-text">PROFESSIONAL RESUME</h2>
+                <p class="text-3xl font-bold text-blue-400">My Technical Background & Experience</p>
             </div>
             
-            <div class="section-card bg-white rounded-2xl p-10 md:p-14 shadow-2xl">
+            <div class="card-3d bg-gradient-to-br from-blue-900/30 to-black rounded-3xl p-12 md:p-16 border border-blue-500/30">
                 <!-- Header -->
-                <div class="text-center mb-10 pb-10 border-b-4 border-gradient-to-r from-indigo-500 to-purple-500">
-                    <h1 class="text-5xl font-black text-gray-900 mb-4 gradient-text">Kiran Ulhas Kulkarni</h1>
-                    <div class="flex flex-wrap justify-center gap-6 text-gray-600 text-lg">
-                        <span><i class="fas fa-phone mr-2 text-indigo-600"></i>+1 (857) 397-3902</span>
-                        <span><i class="fas fa-envelope mr-2 text-indigo-600"></i>kulkarni.ki@northeastern.edu</span>
-                        <a href="https://www.linkedin.com/in/kiran-kulkarni-04973127b" class="text-indigo-600 hover:text-indigo-800 font-semibold transition"><i class="fab fa-linkedin mr-2"></i>LinkedIn</a>
-                        <a href="https://github.com/kiran-kulkarni8" class="text-indigo-600 hover:text-indigo-800 font-semibold transition"><i class="fab fa-github mr-2"></i>GitHub</a>
+                <div class="text-center mb-16 pb-12 border-b-4 border-purple-500/50">
+                    <h1 class="text-6xl font-black mb-6 glow-text">KIRAN ULHAS KULKARNI</h1>
+                    <div class="flex flex-wrap justify-center gap-8 text-xl">
+                        <span><i class="fas fa-phone mr-2 text-purple-400"></i>+1 (857) 397-3902</span>
+                        <span><i class="fas fa-envelope mr-2 text-purple-400"></i>kulkarni.ki@northeastern.edu</span>
+                        <a href="https://www.linkedin.com/in/kiran-kulkarni-04973127b" class="neon-link font-bold"><i class="fab fa-linkedin mr-2"></i>LinkedIn</a>
+                        <a href="https://github.com/kiran-kulkarni8" class="neon-link font-bold"><i class="fab fa-github mr-2"></i>GitHub</a>
                     </div>
                 </div>
 
-                <!-- Profile Summary -->
-                <div class="mb-10">
-                    <h2 class="text-3xl font-black text-gray-900 mb-6 gradient-text flex items-center">
-                        <i class="fas fa-user-circle mr-3"></i>Profile Summary
+                <!-- Profile -->
+                <div class="mb-12">
+                    <h2 class="text-4xl font-black mb-8 glow-text flex items-center">
+                        <i class="fas fa-user-astronaut mr-4 text-purple-400"></i>PROFILE
                     </h2>
-                    <p class="text-lg text-gray-700 leading-relaxed">
-                        Software engineer with hands-on experience building test automation frameworks and scalable software systems. Proven ability to write secure, testable, and maintainable code while creating robust automation solutions using Java, Selenium, and BDD frameworks. Experienced in developing full-stack applications and automation tools that improve testing efficiency and software quality. Passionate about ensuring reliability through innovative testing strategies and automation frameworks. Seeking to leverage coding and QA expertise in a challenging SDET internship.
+                    <p class="text-xl leading-relaxed opacity-90">
+                        Software engineer with hands-on experience building test automation frameworks and scalable software systems. Proven ability to write secure, testable, and maintainable code while creating robust automation solutions using Java, Selenium, and BDD frameworks.
                     </p>
                 </div>
 
                 <!-- Education -->
-                <div class="mb-10">
-                    <h2 class="text-3xl font-black text-gray-900 mb-6 gradient-text flex items-center">
-                        <i class="fas fa-graduation-cap mr-3"></i>Education
+                <div class="mb-12">
+                    <h2 class="text-4xl font-black mb-8 glow-text flex items-center">
+                        <i class="fas fa-graduation-cap mr-4 text-purple-400"></i>EDUCATION
                     </h2>
                     <div class="space-y-6">
-                        <div class="p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl hover:shadow-lg transition-all duration-300">
+                        <div class="holo-card rounded-2xl p-8">
                             <div class="flex justify-between items-start flex-wrap gap-4">
                                 <div>
-                                    <h3 class="text-2xl font-bold text-gray-900">Northeastern University</h3>
-                                    <p class="text-lg text-gray-700 font-semibold">Master of Science in Computer Science</p>
-                                    <p class="text-gray-600">Boston, Massachusetts, United States</p>
+                                    <h3 class="text-3xl font-black">Northeastern University</h3>
+                                    <p class="text-xl font-bold text-purple-400">Master of Science in Computer Science</p>
+                                    <p class="opacity-70">Boston, Massachusetts</p>
                                 </div>
-                                <span class="text-indigo-600 font-bold text-lg">Sep 2025 – Dec 2027</span>
+                                <span class="text-purple-400 font-black text-xl">Sep 2025 – Dec 2027</span>
                             </div>
                         </div>
-                        <div class="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl hover:shadow-lg transition-all duration-300">
+                        <div class="holo-card rounded-2xl p-8">
                             <div class="flex justify-between items-start flex-wrap gap-4">
                                 <div>
-                                    <h3 class="text-2xl font-bold text-gray-900">Keshav Memorial Institute Of Technology</h3>
-                                    <p class="text-lg text-gray-700 font-semibold">Bachelor of Technology in Computer Science (CGPA: 8.3)</p>
-                                    <p class="text-gray-600">Hyderabad, Telangana, India</p>
+                                    <h3 class="text-3xl font-black">Keshav Memorial Institute Of Technology</h3>
+                                    <p class="text-xl font-bold text-blue-400">Bachelor of Technology in CS (CGPA: 8.3)</p>
+                                    <p class="opacity-70">Hyderabad, India</p>
                                 </div>
-                                <span class="text-indigo-600 font-bold text-lg">Nov 2021 – Jul 2025</span>
+                                <span class="text-blue-400 font-black text-xl">Nov 2021 – Jul 2025</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Technical Skills -->
-                <div class="mb-10">
-                    <h2 class="text-3xl font-black text-gray-900 mb-6 gradient-text flex items-center">
-                        <i class="fas fa-code mr-3"></i>Technical Skills
+                <!-- Skills -->
+                <div class="mb-12">
+                    <h2 class="text-4xl font-black mb-8 glow-text flex items-center">
+                        <i class="fas fa-terminal mr-4 text-purple-400"></i>TECHNICAL SKILLS
                     </h2>
                     <div class="space-y-6">
                         <div>
-                            <h4 class="font-bold text-xl text-gray-900 mb-3 flex items-center">
-                                <i class="fas fa-flask text-indigo-600 mr-2"></i>Testing & Automation:
+                            <h4 class="font-black text-2xl mb-4 flex items-center">
+                                <i class="fas fa-flask text-purple-400 mr-3"></i>Testing & Automation
                             </h4>
-                            <div class="flex flex-wrap">
-                                <span class="skill-badge">Selenium WebDriver</span>
-                                <span class="skill-badge">REST-Assured</span>
-                                <span class="skill-badge">JUnit</span>
-                                <span class="skill-badge">TestNG</span>
-                                <span class="skill-badge">Postman</span>
-                                <span class="skill-badge">Cucumber (BDD)</span>
-                                <span class="skill-badge">Hamcrest</span>
-                                <span class="skill-badge">Extent Reports</span>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">Selenium WebDriver</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">REST-Assured</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">JUnit</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">TestNG</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">Cucumber (BDD)</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">Postman</span>
                             </div>
                         </div>
                         <div>
-                            <h4 class="font-bold text-xl text-gray-900 mb-3 flex items-center">
-                                <i class="fas fa-laptop-code text-purple-600 mr-2"></i>Programming:
+                            <h4 class="font-black text-2xl mb-4 flex items-center">
+                                <i class="fas fa-laptop-code text-blue-400 mr-3"></i>Programming
                             </h4>
-                            <div class="flex flex-wrap">
-                                <span class="skill-badge">Java</span>
-                                <span class="skill-badge">Python</span>
-                                <span class="skill-badge">JavaScript/TypeScript</span>
-                                <span class="skill-badge">C++</span>
-                                <span class="skill-badge">SQL</span>
-                                <span class="skill-badge">Bash</span>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">Java</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">Python</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">JavaScript/TypeScript</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">C++</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">SQL</span>
                             </div>
                         </div>
                         <div>
-                            <h4 class="font-bold text-xl text-gray-900 mb-3 flex items-center">
-                                <i class="fas fa-globe text-blue-600 mr-2"></i>Web Development:
+                            <h4 class="font-black text-2xl mb-4 flex items-center">
+                                <i class="fas fa-globe text-green-400 mr-3"></i>Web Development
                             </h4>
-                            <div class="flex flex-wrap">
-                                <span class="skill-badge">React.js</span>
-                                <span class="skill-badge">Node.js</span>
-                                <span class="skill-badge">Express.js</span>
-                                <span class="skill-badge">MongoDB</span>
-                                <span class="skill-badge">PostgreSQL</span>
-                                <span class="skill-badge">MySQL</span>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-xl text-gray-900 mb-3 flex items-center">
-                                <i class="fas fa-tools text-green-600 mr-2"></i>Tools & Platforms:
-                            </h4>
-                            <div class="flex flex-wrap">
-                                <span class="skill-badge">Git/GitHub/GitLab</span>
-                                <span class="skill-badge">Docker</span>
-                                <span class="skill-badge">AWS S3</span>
-                                <span class="skill-badge">Linux</span>
-                                <span class="skill-badge">Jira</span>
-                                <span class="skill-badge">Jenkins</span>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">React.js</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">Node.js</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">MongoDB</span>
+                                <span class="skill-badge-neon px-5 py-3 rounded-full font-bold">Express.js</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Experience -->
-                <div class="mb-10">
-                    <h2 class="text-3xl font-black text-gray-900 mb-6 gradient-text flex items-center">
-                        <i class="fas fa-briefcase mr-3"></i>Experience
+                <div class="mb-12">
+                    <h2 class="text-4xl font-black mb-8 glow-text flex items-center">
+                        <i class="fas fa-briefcase mr-4 text-purple-400"></i>EXPERIENCE
                     </h2>
                     <div class="space-y-8">
-                        <div class="p-6 border-l-4 border-indigo-600 bg-gradient-to-r from-indigo-50 to-white rounded-r-xl hover:shadow-xl transition-all duration-300">
-                            <div class="flex justify-between items-start mb-3 flex-wrap gap-4">
+                        <div class="holo-card rounded-2xl p-8 border-l-4 border-purple-500">
+                            <div class="flex justify-between items-start mb-4 flex-wrap gap-4">
                                 <div>
-                                    <h3 class="text-2xl font-bold text-gray-900">Test Automation Intern – Quality Assurance</h3>
-                                    <p class="text-lg text-indigo-700 font-semibold">EPAM Systems, India</p>
+                                    <h3 class="text-3xl font-black">Test Automation Intern</h3>
+                                    <p class="text-xl font-bold text-purple-400">EPAM Systems, India</p>
                                 </div>
-                                <span class="text-indigo-600 font-bold text-lg">Jan 2025 – May 2025</span>
+                                <span class="text-purple-400 font-black text-xl">Jan 2025 – May 2025</span>
                             </div>
-                            <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4 text-lg">
-                                <li>Built robust test automation framework using BDD Cucumber with Java, Selenium WebDriver, TestNG, and REST-Assured, <span class="font-semibold text-indigo-600">reducing manual testing time by 70%</span></li>
-                                <li>Automated 50+ UI and API test scenarios for restaurant management web application with 95%+ test coverage</li>
-                                <li>Designed modular, reusable step definitions and assertion strategies using Hamcrest</li>
-                                <li>Created maintainable test architecture <span class="font-semibold text-indigo-600">reducing test maintenance overhead by 40%</span></li>
-                                <li>Identified and reported 30+ critical bugs during testing phases</li>
-                            </ul>
-                        </div>
-                        <div class="p-6 border-l-4 border-purple-600 bg-gradient-to-r from-purple-50 to-white rounded-r-xl hover:shadow-xl transition-all duration-300">
-                            <div class="flex justify-between items-start mb-3 flex-wrap gap-4">
-                                <div>
-                                    <h3 class="text-2xl font-bold text-gray-900">Teaching Assistant – Python, AI/ML, and IoT</h3>
-                                    <p class="text-lg text-purple-700 font-semibold">International Finishing School, Ghana (Remote)</p>
-                                </div>
-                                <span class="text-purple-600 font-bold text-lg">May 2022 – Aug 2022</span>
-                            </div>
-                            <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4 text-lg">
-                                <li>Supported 50+ students in debugging code and optimizing algorithms</li>
-                                <li>Contributed to preparation of lecture materials and participated in delivering live sessions</li>
-                                <li>Provided hands-on guidance during practical labs with real-time troubleshooting</li>
+                            <ul class="space-y-3 text-lg opacity-90">
+                                <li class="flex items-start"><i class="fas fa-chevron-right text-purple-400 mr-3 mt-1"></i>Built robust test automation framework, <span class="font-bold text-purple-400 ml-1">reducing manual testing by 70%</span></li>
+                                <li class="flex items-start"><i class="fas fa-chevron-right text-purple-400 mr-3 mt-1"></i>Automated 50+ UI and API test scenarios with 95%+ coverage</li>
+                                <li class="flex items-start"><i class="fas fa-chevron-right text-purple-400 mr-3 mt-1"></i>Created maintainable architecture reducing overhead by 40%</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <!-- Projects -->
-                <div class="mb-10">
-                    <h2 class="text-3xl font-black text-gray-900 mb-6 gradient-text flex items-center">
-                        <i class="fas fa-rocket mr-3"></i>Selected Projects
+                <div>
+                    <h2 class="text-4xl font-black mb-8 glow-text flex items-center">
+                        <i class="fas fa-rocket mr-4 text-purple-400"></i>PROJECTS
                     </h2>
-                    <div class="space-y-6">
-                        <div class="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Calendar Management Application</h3>
-                            <p class="text-sm text-indigo-600 mb-3 font-semibold">Java | MVC Architecture | Swing | JUnit | Design Patterns</p>
-                            <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                                <li>Developed comprehensive calendar system with GUI and CLI interfaces using MVC architecture</li>
-                                <li>Implemented robust event management with recurring events and timezone handling</li>
-                                <li>Built modular controller architecture with strategy pattern</li>
-                            </ul>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="holo-card rounded-2xl p-8">
+                            <h3 class="text-2xl font-black mb-3">Calendar Management App</h3>
+                            <p class="text-sm text-purple-400 mb-4 font-bold">Java | MVC | Swing | JUnit</p>
+                            <p class="opacity-80">Comprehensive calendar system with GUI/CLI interfaces using MVC architecture</p>
                         </div>
-                        <div class="p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Stockify – Stock Market Simulation Platform</h3>
-                            <p class="text-sm text-purple-600 mb-3 font-semibold">React.js | Node.js | Express | MongoDB | WebSockets | Chart.js</p>
-                            <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                                <li>Developed full-stack platform with real-time market data and virtual currency trading</li>
-                                <li>Engineered WebSocket-based real-time updates handling 100+ concurrent connections</li>
-                                <li>Designed scalable MERN stack architecture with RESTful API endpoints</li>
-                            </ul>
-                        </div>
-                        <div class="p-6 bg-gradient-to-br from-green-50 to-teal-50 rounded-xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Gesture-Based Control of 6DOF Mobile Robotic Arm</h3>
-                            <p class="text-sm text-green-600 mb-3 font-semibold">Python | OpenCV | TensorFlow | ArduPilot | Mediapipe | Jetson Nano</p>
-                            <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                                <li>Developed gesture recognition pipeline achieving 90%+ accuracy with <100ms latency</li>
-                                <li>Constructed 6-wheel rover with 6DOF robotic arm for precision mobility</li>
-                            </ul>
+                        <div class="holo-card rounded-2xl p-8">
+                            <h3 class="text-2xl font-black mb-3">Stockify Platform</h3>
+                            <p class="text-sm text-blue-400 mb-4 font-bold">React | Node.js | MongoDB</p>
+                            <p class="opacity-80">Full-stack platform with real-time market data and virtual trading</p>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <!-- Achievements -->
-                <div>
-                    <h2 class="text-3xl font-black text-gray-900 mb-6 gradient-text flex items-center">
-                        <i class="fas fa-trophy mr-3"></i>Achievements & Involvement
-                    </h2>
-                    <ul class="list-disc list-inside space-y-3 text-gray-700 ml-4 text-lg">
-                        <li>Developed automated test framework at EPAM that <span class="font-semibold text-indigo-600">improved testing efficiency by 70%</span></li>
-                        <li>Core Member of Recurse – the official coding club of KMIT</li>
-                        <li><span class="font-semibold text-yellow-600">Second place</span> in Stackathon hackathon for BePositiv MERN-based platform</li>
-                        <li>Selected for KAVACH 2023, National Level Hackathon on Cyber Security</li>
+    <!-- Module 8 -->
+    <section id="module8" class="py-32 px-4 bg-gradient-to-b from-black to-blue-950/20 relative">
+        <div class="max-w-5xl mx-auto fade-in">
+            <div class="text-center mb-16">
+                <span class="module-badge-scan bg-green-600 px-8 py-4 rounded-full font-black text-sm shadow-2xl mb-6">MODULE 3</span>
+                <h2 class="section-title text-6xl font-black mb-6 glow-text">TELL ME ABOUT YOURSELF</h2>
+                <p class="text-3xl font-bold text-green-400">My Professional Story</p>
+            </div>
+            <div class="card-3d bg-gradient-to-br from-green-900/30 to-black rounded-3xl p-12 border border-green-500/30">
+                <h3 class="text-4xl font-black mb-6 glow-text">INTERVIEW RESPONSE</h3>
+                <p class="text-xl mb-10 opacity-80 leading-relaxed">
+                    This video demonstrates my response to one of the most common interview questions. I walk through my professional journey, highlighting key experiences, skills, and what drives me in my career path.
+                </p>
+                <div class="video-glow mb-10">
+                    <div class="video-container">
+                        <iframe 
+                            src="https://northeastern.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=f931dc40-7f4b-4ad0-9e33-b38e0187b7bf&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all"
+                            allowfullscreen
+                            allow="autoplay">
+                        </iframe>
+                    </div>
+                </div>
+                <div class="holo-card rounded-2xl p-8">
+                    <h4 class="font-black text-2xl mb-6 glow-text"><i class="fas fa-list-check text-green-400 mr-3"></i>RESPONSE STRUCTURE</h4>
+                    <ul class="space-y-4 text-xl">
+                        <li class="flex items-start"><i class="fas fa-bolt text-green-400 mr-4 mt-1"></i><span>Educational background and current studies</span></li>
+                        <li class="flex items-start"><i class="fas fa-bolt text-green-400 mr-4 mt-1"></i><span>EPAM Systems internship achievements</span></li>
+                        <li class="flex items-start"><i class="fas fa-bolt text-green-400 mr-4 mt-1"></i><span>Technical skills and project highlights</span></li>
+                        <li class="flex items-start"><i class="fas fa-bolt text-green-400 mr-4 mt-1"></i><span>Career goals and aspirations</span></li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Module 8: Tell Me About Yourself -->
-    <section id="module8" class="py-24 px-4 bg-gradient-to-br from-gray-50 to-purple-50">
-        <div class="max-w-4xl mx-auto scroll-reveal">
-            <div class="text-center mb-12">
-                <span class="module-badge bg-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">MODULE 3</span>
-                <h2 class="text-5xl font-black text-gray-900 mt-6 mb-4">Tell Me About Yourself</h2>
-                <p class="text-2xl text-blue-600 font-semibold">My Professional Story</p>
-            </div>
-            <div class="section-card bg-white rounded-2xl p-10 shadow-2xl">
-                <div class="mb-8">
-                    <h3 class="text-3xl font-bold text-gray-900 mb-4">Interview Response Video</h3>
-                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-                        This video demonstrates my response to one of the most common interview questions. I walk through my professional journey, highlighting key experiences, skills, and what drives me in my career path.
-                    </p>
-                </div>
-                <div class="video-container mb-8">
-                    <iframe 
-                        src="https://northeastern.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=f931dc40-7f4b-4ad0-9e33-b38e0187b7bf&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all"
-                        allowfullscreen
-                        allow="autoplay">
-                    </iframe>
-                </div>
-                <div class="highlight-box">
-                    <h4 class="font-bold text-xl text-gray-900 mb-4"><i class="fas fa-list-check text-blue-500 mr-2"></i>Structure of My Response:</h4>
-                    <ul class="space-y-3 text-gray-700 text-lg">
-                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-600 mr-3 mt-1"></i><span>Educational background and current studies at Northeastern</span></li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-600 mr-3 mt-1"></i><span>EPAM Systems internship experience and key achievements</span></li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-600 mr-3 mt-1"></i><span>Technical skills and project highlights</span></li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-600 mr-3 mt-1"></i><span>Career goals and what I'm looking for in my next role</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Module 9: Job Search Strategy -->
-    <section id="strategy" class="py-24 px-4 bg-white">
-        <div class="max-w-5xl mx-auto scroll-reveal">
-            <div class="text-center mb-12">
-                <span class="module-badge bg-green-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">MODULE 4</span>
-                <h2 class="text-5xl font-black text-gray-900 mt-6 mb-4">Job Search Strategy Plan</h2>
-                <p class="text-2xl text-green-600 font-semibold">My Comprehensive Career Planning Roadmap</p>
+    <!-- Strategy Section -->
+    <section id="strategy" class="py-32 px-4 bg-black relative">
+        <div class="max-w-6xl mx-auto fade-in">
+            <div class="text-center mb-16">
+                <span class="module-badge-scan bg-pink-600 px-8 py-4 rounded-full font-black text-sm shadow-2xl mb-6">MODULE 4</span>
+                <h2 class="section-title text-6xl font-black mb-6 glow-text">JOB SEARCH STRATEGY</h2>
+                <p class="text-3xl font-bold text-pink-400">My Career Planning Roadmap</p>
             </div>
 
             <!-- SMART Goals -->
-            <div class="section-card bg-white rounded-2xl p-10 mb-10 shadow-2xl">
-                <h3 class="text-3xl font-black text-gray-900 mb-8 gradient-text flex items-center">
-                    <i class="fas fa-bullseye mr-3"></i>Career Goals (SMART Goals)
-                </h3>
-                <div class="space-y-6">
-                    <div class="p-8 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl hover:shadow-xl transition-all duration-300 border-2 border-indigo-100">
-                        <h4 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                            <span class="bg-indigo-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-3">1</span>
-                            Secure Summer 2026 Internship
-                        </h4>
-                        <p class="text-gray-700 mb-2 text-lg"><strong class="text-indigo-600">Specific:</strong> Obtain SDET or Software Engineer internship at a top-tier technology company</p>
-                        <p class="text-gray-700 mb-2 text-lg"><strong class="text-purple-600">Measurable:</strong> Apply to 30+ positions, secure 5+ interviews, receive 2+ offers</p>
-                        <p class="text-gray-700 mb-2 text-lg"><strong class="text-blue-600">Achievable:</strong> Leverage technical skills, EPAM experience, and Northeastern network</p>
-                        <p class="text-gray-700 mb-2 text-lg"><strong class="text-pink-600">Relevant:</strong> Aligns with career interest in QA, automation, and full-stack development</p>
-                        <p class="text-gray-700 text-lg"><strong class="text-green-600">Time-bound:</strong> Complete by April 30, 2026</p>
-                    </div>
-                    <div class="p-8 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl hover:shadow-xl transition-all duration-300 border-2 border-purple-100">
-                        <h4 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                            <span class="bg-purple-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-3">2</span>
-                            Develop Full-Stack Expertise
-                        </h4>
-                        <p class="text-gray-700 mb-2 text-lg"><strong class="text-purple-600">Target:</strong> Complete 3 full-stack applications showcasing MERN stack proficiency</p>
-                        <p class="text-gray-700 text-lg"><strong class="text-pink-600">Projects:</strong> Kambaz (Dec 2025), Calendar Dashboard (Dec 2025), Personal Project (Mar 2026)</p>
-                    </div>
-                    <div class="p-8 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl hover:shadow-xl transition-all duration-300 border-2 border-blue-100">
-                        <h4 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-3">3</span>
-                            Enhance Test Automation Portfolio
-                        </h4>
-                        <p class="text-gray-700 mb-2 text-lg"><strong class="text-blue-600">Target:</strong> Learn Playwright/Cypress and create open-source testing framework</p>
-                        <p class="text-gray-700 text-lg"><strong class="text-cyan-600">Deadline:</strong> February 28, 2026</p>
-                    </div>
-                    <div class="p-8 bg-gradient-to-br from-green-50 to-teal-50 rounded-2xl hover:shadow-xl transition-all duration-300 border-2 border-green-100">
-                        <h4 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                            <span class="bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center mr-3">4</span>
-                            Build Professional Network
-                        </h4>
-                        <p class="text-gray-700 mb-2 text-lg"><strong class="text-green-600">Target:</strong> Connect with 20+ engineers/SDETs at target companies</p>
-                        <p class="text-gray-700 text-lg"><strong class="text-teal-600">Actions:</strong> Attend 4+ networking events, conduct 10 informational interviews</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Skills & Strengths -->
-            <div class="section-card bg-white rounded-2xl p-10 mb-10 shadow-2xl">
-                <h3 class="text-3xl font-black text-gray-900 mb-8 gradient-text flex items-center">
-                    <i class="fas fa-star mr-3"></i>Top Skills & Strengths
+            <div class="card-3d bg-gradient-to-br from-pink-900/30 to-black rounded-3xl p-12 mb-12 border border-pink-500/30">
+                <h3 class="text-4xl font-black mb-10 glow-text flex items-center">
+                    <i class="fas fa-bullseye mr-4 text-pink-400"></i>SMART GOALS
                 </h3>
                 <div class="grid md:grid-cols-2 gap-8">
-                    <div class="p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl">
-                        <h4 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                            <i class="fas fa-code-branch text-indigo-600 mr-2"></i>Technical Skills
+                    <div class="holo-card rounded-2xl p-8 border-l-4 border-purple-500">
+                        <h4 class="text-2xl font-black mb-4 flex items-center">
+                            <span class="timeline-node w-12 h-12 rounded-full flex items-center justify-center mr-3 font-black">1</span>
+                            Secure Summer 2026 Internship
                         </h4>
-                        <ul class="space-y-4">
-                            <li class="flex items-start">
-                                <span class="text-2xl text-indigo-600 mr-3">▹</span>
-                                <div>
-                                    <strong class="text-gray-900 text-lg">Test Automation Development</strong>
-                                    <p class="text-gray-600">BDD Cucumber frameworks at EPAM Systems</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-2xl text-indigo-600 mr-3">▹</span>
-                                <div>
-                                    <strong class="text-gray-900 text-lg">Full-Stack Web Development</strong>
-                                    <p class="text-gray-600">MERN stack applications with cloud deployment</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-2xl text-indigo-600 mr-3">▹</span>
-                                <div>
-                                    <strong class="text-gray-900 text-lg">API Development & Integration</strong>
-                                    <p class="text-gray-600">RESTful APIs with Node.js and Express</p>
-                                </div>
-                            </li>
-                        </ul>
+                        <p class="opacity-80 text-lg">Apply to 30+ positions, secure 5+ interviews, receive 2+ offers by April 2026</p>
                     </div>
-                    <div class="p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
-                        <h4 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                            <i class="fas fa-gem text-purple-600 mr-2"></i>Core Strengths
+                    <div class="holo-card rounded-2xl p-8 border-l-4 border-blue-500">
+                        <h4 class="text-2xl font-black mb-4 flex items-center">
+                            <span class="timeline-node w-12 h-12 rounded-full flex items-center justify-center mr-3 font-black" style="animation-delay: 0.5s;">2</span>
+                            Develop Full-Stack Expertise
                         </h4>
-                        <ul class="space-y-4">
-                            <li class="flex items-start">
-                                <span class="text-2xl text-purple-600 mr-3">▹</span>
-                                <div>
-                                    <strong class="text-gray-900 text-lg">Methodical Problem-Solver</strong>
-                                    <p class="text-gray-600">Systematic approach to debugging challenges</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-2xl text-purple-600 mr-3">▹</span>
-                                <div>
-                                    <strong class="text-gray-900 text-lg">Persistence & Iteration</strong>
-                                    <p class="text-gray-600">Continuous refinement until achieving results</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-2xl text-purple-600 mr-3">▹</span>
-                                <div>
-                                    <strong class="text-gray-900 text-lg">Continuous Learner</strong>
-                                    <p class="text-gray-600">Rapid adaptation to new technologies</p>
-                                </div>
-                            </li>
-                        </ul>
+                        <p class="opacity-80 text-lg">Complete 3 MERN stack applications by March 2026</p>
+                    </div>
+                    <div class="holo-card rounded-2xl p-8 border-l-4 border-green-500">
+                        <h4 class="text-2xl font-black mb-4 flex items-center">
+                            <span class="timeline-node w-12 h-12 rounded-full flex items-center justify-center mr-3 font-black" style="animation-delay: 1s;">3</span>
+                            Enhance Test Automation
+                        </h4>
+                        <p class="opacity-80 text-lg">Learn Playwright/Cypress and create testing framework by February 2026</p>
+                    </div>
+                    <div class="holo-card rounded-2xl p-8 border-l-4 border-pink-500">
+                        <h4 class="text-2xl font-black mb-4 flex items-center">
+                            <span class="timeline-node w-12 h-12 rounded-full flex items-center justify-center mr-3 font-black" style="animation-delay: 1.5s;">4</span>
+                            Build Professional Network
+                        </h4>
+                        <p class="opacity-80 text-lg">Connect with 20+ engineers through 4+ networking events</p>
                     </div>
                 </div>
             </div>
 
             <!-- Target Companies -->
-            <div class="section-card bg-white rounded-2xl p-10 mb-10 shadow-2xl">
-                <h3 class="text-3xl font-black text-gray-900 mb-8 gradient-text flex items-center">
-                    <i class="fas fa-building mr-3"></i>Target Companies
+            <div class="card-3d bg-gradient-to-br from-purple-900/30 to-black rounded-3xl p-12 mb-12 border border-purple-500/30">
+                <h3 class="text-4xl font-black mb-10 glow-text flex items-center">
+                    <i class="fas fa-building mr-4 text-purple-400"></i>TARGET COMPANIES
                 </h3>
                 <div class="grid md:grid-cols-2 gap-6">
-                    <div class="company-card border-l-4 border-indigo-500 pl-6 py-4 rounded-r-lg hover:bg-indigo-50">
-                        <h4 class="font-bold text-xl text-gray-900 mb-2">Google</h4>
-                        <p class="text-gray-600">Industry leader in test automation and quality infrastructure</p>
+                    <div class="company-lightning rounded-xl p-6">
+                        <h4 class="font-black text-2xl mb-2 text-purple-400">Google</h4>
+                        <p class="opacity-80">Industry leader in test automation and quality infrastructure</p>
                     </div>
-                    <div class="company-card border-l-4 border-purple-500 pl-6 py-4 rounded-r-lg hover:bg-purple-50">
-                        <h4 class="font-bold text-xl text-gray-900 mb-2">Microsoft</h4>
-                        <p class="text-gray-600">Robust SDET career path with comprehensive training programs</p>
+                    <div class="company-lightning rounded-xl p-6">
+                        <h4 class="font-black text-2xl mb-2 text-blue-400">Microsoft</h4>
+                        <p class="opacity-80">Robust SDET career path with comprehensive training</p>
                     </div>
-                    <div class="company-card border-l-4 border-blue-500 pl-6 py-4 rounded-r-lg hover:bg-blue-50">
-                        <h4 class="font-bold text-xl text-gray-900 mb-2">Amazon</h4>
-                        <p class="text-gray-600">Massive scale testing challenges across AWS and e-commerce</p>
+                    <div class="company-lightning rounded-xl p-6">
+                        <h4 class="font-black text-2xl mb-2 text-pink-400">Amazon</h4>
+                        <p class="opacity-80">Massive scale testing challenges across AWS</p>
                     </div>
-                    <div class="company-card border-l-4 border-pink-500 pl-6 py-4 rounded-r-lg hover:bg-pink-50">
-                        <h4 class="font-bold text-xl text-gray-900 mb-2">Meta</h4>
-                        <p class="text-gray-600">Cutting-edge testing approaches for global scale platforms</p>
+                    <div class="company-lightning rounded-xl p-6">
+                        <h4 class="font-black text-2xl mb-2 text-cyan-400">Meta</h4>
+                        <p class="opacity-80">Cutting-edge testing at global scale</p>
                     </div>
-                    <div class="company-card border-l-4 border-green-500 pl-6 py-4 rounded-r-lg hover:bg-green-50">
-                        <h4 class="font-bold text-xl text-gray-900 mb-2">Wayfair</h4>
-                        <p class="text-gray-600">Boston-based with meaningful intern projects</p>
+                    <div class="company-lightning rounded-xl p-6">
+                        <h4 class="font-black text-2xl mb-2 text-green-400">Wayfair</h4>
+                        <p class="opacity-80">Boston-based with meaningful projects</p>
                     </div>
-                    <div class="company-card border-l-4 border-orange-500 pl-6 py-4 rounded-r-lg hover:bg-orange-50">
-                        <h4 class="font-bold text-xl text-gray-900 mb-2">HubSpot</h4>
-                        <p class="text-gray-600">Cambridge company with excellent engineering culture</p>
+                    <div class="company-lightning rounded-xl p-6">
+                        <h4 class="font-black text-2xl mb-2 text-orange-400">HubSpot</h4>
+                        <p class="opacity-80">Cambridge company with excellent culture</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Action Plan Timeline -->
-            <div class="section-card bg-white rounded-2xl p-10 shadow-2xl">
-                <h3 class="text-3xl font-black text-gray-900 mb-8 gradient-text flex items-center">
-                    <i class="fas fa-calendar-alt mr-3"></i>Action Plan Timeline
+            <!-- Timeline -->
+            <div class="card-3d bg-gradient-to-br from-blue-900/30 to-black rounded-3xl p-12 border border-blue-500/30">
+                <h3 class="text-4xl font-black mb-10 glow-text flex items-center">
+                    <i class="fas fa-calendar-alt mr-4 text-blue-400"></i>ACTION TIMELINE
                 </h3>
                 <div class="space-y-8">
                     <div class="flex items-start">
-                        <div class="timeline-circle bg-gradient-to-br from-indigo-600 to-purple-600 text-white rounded-2xl w-36 h-36 flex flex-col items-center justify-center mr-6 flex-shrink-0 shadow-xl">
-                            <div class="text-3xl font-black">Dec</div>
-                            <div class="text-sm font-semibold">2025</div>
+                        <div class="timeline-node w-32 h-32 rounded-2xl flex flex-col items-center justify-center mr-8 flex-shrink-0 font-black text-2xl">
+                            <div>DEC</div>
+                            <div class="text-sm">2025</div>
                         </div>
-                        <div class="flex-1 p-6 bg-gradient-to-r from-indigo-50 to-white rounded-xl">
-                            <h4 class="font-bold text-xl text-gray-900 mb-3">Foundation Phase</h4>
-                            <ul class="text-gray-700 space-y-2 text-lg">
-                                <li>• Complete academic projects</li>
-                                <li>• Update LinkedIn and GitHub</li>
-                                <li>• Begin company research</li>
-                            </ul>
+                        <div class="holo-card flex-1 rounded-2xl p-8">
+                            <h4 class="font-black text-2xl mb-3">Foundation Phase</h4>
+                            <p class="opacity-80 text-lg">Complete projects • Update profiles • Research companies</p>
                         </div>
                     </div>
                     <div class="flex items-start">
-                        <div class="timeline-circle bg-gradient-to-br from-purple-600 to-pink-600 text-white rounded-2xl w-36 h-36 flex flex-col items-center justify-center mr-6 flex-shrink-0 shadow-xl" style="animation-delay: 0.3s;">
-                            <div class="text-3xl font-black">Jan</div>
-                            <div class="text-sm font-semibold">2026</div>
+                        <div class="timeline-node w-32 h-32 rounded-2xl flex flex-col items-center justify-center mr-8 flex-shrink-0 font-black text-2xl" style="animation-delay: 0.5s;">
+                            <div>JAN</div>
+                            <div class="text-sm">2026</div>
                         </div>
-                        <div class="flex-1 p-6 bg-gradient-to-r from-purple-50 to-white rounded-xl">
-                            <h4 class="font-bold text-xl text-gray-900 mb-3">Application Launch</h4>
-                            <ul class="text-gray-700 space-y-2 text-lg">
-                                <li>• Apply to first round (10-15 positions)</li>
-                                <li>• Attend first networking event</li>
-                                <li>• Finalize reference list</li>
-                            </ul>
+                        <div class="holo-card flex-1 rounded-2xl p-8">
+                            <h4 class="font-black text-2xl mb-3">Application Launch</h4>
+                            <p class="opacity-80 text-lg">Apply to 10-15 positions • First networking event</p>
                         </div>
                     </div>
                     <div class="flex items-start">
-                        <div class="timeline-circle bg-gradient-to-br from-blue-600 to-cyan-600 text-white rounded-2xl w-36 h-36 flex flex-col items-center justify-center mr-6 flex-shrink-0 shadow-xl" style="animation-delay: 0.6s;">
-                            <div class="text-3xl font-black">Feb</div>
-                            <div class="text-sm font-semibold">2026</div>
+                        <div class="timeline-node w-32 h-32 rounded-2xl flex flex-col items-center justify-center mr-8 flex-shrink-0 font-black text-2xl" style="animation-delay: 1s;">
+                            <div>FEB</div>
+                            <div class="text-sm">2026</div>
                         </div>
-                        <div class="flex-1 p-6 bg-gradient-to-r from-blue-50 to-white rounded-xl">
-                            <h4 class="font-bold text-xl text-gray-900 mb-3">Interview Preparation</h4>
-                            <ul class="text-gray-700 space-y-2 text-lg">
-                                <li>• Apply to second round (10-15 positions)</li>
-                                <li>• Begin interview preparation</li>
-                                <li>• Attend 2-3 networking events</li>
-                            </ul>
+                        <div class="holo-card flex-1 rounded-2xl p-8">
+                            <h4 class="font-black text-2xl mb-3">Interview Preparation</h4>
+                            <p class="opacity-80 text-lg">Second round applications • 2-3 networking events</p>
                         </div>
                     </div>
                     <div class="flex items-start">
-                        <div class="timeline-circle bg-gradient-to-br from-green-600 to-teal-600 text-white rounded-2xl w-36 h-36 flex flex-col items-center justify-center mr-6 flex-shrink-0 shadow-xl" style="animation-delay: 0.9s;">
-                            <div class="text-3xl font-black">Mar-Apr</div>
-                            <div class="text-sm font-semibold">2026</div>
+                        <div class="timeline-node w-32 h-32 rounded-2xl flex flex-col items-center justify-center mr-8 flex-shrink-0 font-black text-2xl" style="animation-delay: 1.5s;">
+                            <div>MAR</div>
+                            <div class="text-sm">2026</div>
                         </div>
-                        <div class="flex-1 p-6 bg-gradient-to-r from-green-50 to-white rounded-xl">
-                            <h4 class="font-bold text-xl text-gray-900 mb-3">Final Push & Decision</h4>
-                            <ul class="text-gray-700 space-y-2 text-lg">
-                                <li>• Final application push</li>
-                                <li>• Active interview period</li>
-                                <li>• Evaluate and accept offer</li>
-                            </ul>
+                        <div class="holo-card flex-1 rounded-2xl p-8">
+                            <h4 class="font-black text-2xl mb-3">Decision Phase</h4>
+                            <p class="opacity-80 text-lg">Active interviews • Evaluate offers • Accept position</p>
                         </div>
                     </div>
                 </div>
@@ -981,69 +1027,124 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-24 px-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-        <div class="max-w-4xl mx-auto text-center scroll-reveal">
-            <h2 class="text-5xl font-black text-gray-900 mb-6">Let's Connect</h2>
-            <p class="text-xl text-gray-600 mb-14 leading-relaxed">
-                I'm actively seeking Summer 2026 internship opportunities in SDET and Software Engineering roles.<br class="hidden md:block">
-                <span class="font-semibold text-indigo-600">Let's discuss how I can contribute to your team!</span>
+    <section id="contact" class="py-32 px-4 bg-gradient-to-b from-black to-purple-950/30 relative">
+        <div class="max-w-5xl mx-auto text-center fade-in">
+            <h2 class="section-title text-6xl font-black mb-8 glow-text">LET'S CONNECT</h2>
+            <p class="text-2xl mb-16 opacity-80 leading-relaxed">
+                I'm actively seeking <span class="font-bold text-purple-400">Summer 2026 internship opportunities</span> in SDET and Software Engineering roles.<br>
+                <span class="font-bold glow-text text-3xl">Let's build something amazing together!</span>
             </p>
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="contact-card bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <i class="fas fa-envelope text-5xl text-indigo-600 mb-4 icon-float"></i>
-                    <h3 class="font-bold text-xl text-gray-900 mb-3">Email</h3>
-                    <a href="mailto:kulkarni.ki@northeastern.edu" class="text-indigo-600 hover:text-indigo-800 font-semibold transition">kulkarni.ki@northeastern.edu</a>
+                <div class="contact-holo rounded-3xl p-10">
+                    <i class="fas fa-envelope text-6xl text-purple-400 mb-6 icon-orbit"></i>
+                    <h3 class="font-black text-2xl mb-4 glow-text">EMAIL</h3>
+                    <a href="mailto:kulkarni.ki@northeastern.edu" class="neon-link text-lg">kulkarni.ki@northeastern.edu</a>
                 </div>
-                <div class="contact-card bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <i class="fab fa-linkedin text-5xl text-indigo-600 mb-4 icon-float" style="animation-delay: 0.2s;"></i>
-                    <h3 class="font-bold text-xl text-gray-900 mb-3">LinkedIn</h3>
-                    <a href="https://www.linkedin.com/in/kiran-kulkarni-04973127b" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-semibold transition">Connect with me</a>
+                <div class="contact-holo rounded-3xl p-10">
+                    <i class="fab fa-linkedin text-6xl text-blue-400 mb-6 icon-orbit" style="animation-delay: 0.5s;"></i>
+                    <h3 class="font-black text-2xl mb-4 glow-text">LINKEDIN</h3>
+                    <a href="https://www.linkedin.com/in/kiran-kulkarni-04973127b" target="_blank" class="neon-link text-lg">Connect with me</a>
                 </div>
-                <div class="contact-card bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <i class="fab fa-github text-5xl text-indigo-600 mb-4 icon-float" style="animation-delay: 0.4s;"></i>
-                    <h3 class="font-bold text-xl text-gray-900 mb-3">GitHub</h3>
-                    <a href="https://github.com/kiran-kulkarni8" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-semibold transition">View my projects</a>
+                <div class="contact-holo rounded-3xl p-10">
+                    <i class="fab fa-github text-6xl text-pink-400 mb-6 icon-orbit" style="animation-delay: 1s;"></i>
+                    <h3 class="font-black text-2xl mb-4 glow-text">GITHUB</h3>
+                    <a href="https://github.com/kiran-kulkarni8" target="_blank" class="neon-link text-lg">View my projects</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer-gradient text-white py-12 px-4">
+    <footer class="bg-black border-t border-purple-500/30 py-12 px-4">
         <div class="max-w-6xl mx-auto text-center">
-            <p class="text-gray-300 mb-4 text-lg">Career Preparation Portfolio - Northeastern University</p>
-            <p class="text-gray-400">© 2025 Kiran Ulhas Kulkarni. All rights reserved.</p>
+            <p class="opacity-70 mb-4 text-lg">Career Preparation Portfolio - Northeastern University</p>
+            <p class="opacity-50">© 2025 Kiran Ulhas Kulkarni. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Scroll Reveal Script -->
     <script>
-        // Scroll reveal animation
-        const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        const cursorGlow = document.getElementById('cursor-glow');
         
-        const elementInView = (el, offset = 100) => {
-            const elementTop = el.getBoundingClientRect().top;
-            return elementTop <= (window.innerHeight || document.documentElement.clientHeight) - offset;
-        };
-        
-        const displayScrollElement = (element) => {
-            element.classList.add('active');
-        };
-        
-        const handleScrollAnimation = () => {
-            scrollRevealElements.forEach((el) => {
-                if (elementInView(el, 100)) {
-                    displayScrollElement(el);
-                }
-            });
-        };
-        
-        window.addEventListener('scroll', () => {
-            handleScrollAnimation();
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorGlow.style.left = (e.clientX - 20) + 'px';
+            cursorGlow.style.top = (e.clientY - 20) + 'px';
         });
         
-        // Initial check
-        handleScrollAnimation();
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + '%';
+        });
+        
+        // Fade in on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        fadeElements.forEach(el => fadeInObserver.observe(el));
+        
+        // Matrix Background
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const matrix = "01";
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#667eea';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrix[Math.floor(Math.random() * matrix.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 50);
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Create Particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 4 + 2 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            particlesContainer.appendChild(particle);
+        }
     </script>
 </body>
 </html>
